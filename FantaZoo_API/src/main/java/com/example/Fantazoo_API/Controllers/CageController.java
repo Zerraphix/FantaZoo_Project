@@ -48,8 +48,6 @@ public class CageController {
         return cr.findById(id)
                 .map(cage -> {
                     cage.setName(newCage.getName());
-                    cage.setZookeepers(newCage.getZookeepers());
-                    cage.setAnimals(newCage.getAnimals());
                     return cr.save(cage);
                 })
                 .orElseGet(() -> {
