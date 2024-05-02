@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/golden_brown_trans">
+
+    <ImageView
+        android:id="@+id/keeper_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/baseline_person_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/golden_brown"/>
+
+    <TextView
+        android:id="@+id/keepername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Zoo Keeper"
+        android:textSize="@dimen/txt_title_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.179"
+        app:layout_constraintStart_toEndOf="@id/keeper_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/cageowner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/keepername"
+        android:layout_marginStart="32dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Cage: "
+        android:textSize="@dimen/txt_small_size"
+        app:layout_constraintStart_toEndOf="@id/keeper_icon"
+        app:layout_constraintTop_toBottomOf="@id/keepername" />
+
+    <TextView
+        android:id="@+id/cage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Cage"
+        android:textSize="@dimen/txt_small_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/cageowner"
+        app:layout_constraintTop_toBottomOf="@id/keepername" />
+
+    <TextView
+        android:id="@+id/weaponowner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/cageowner"
+        android:layout_marginStart="32dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Weapon: "
+        android:textSize="@dimen/txt_small_size"
+        app:layout_constraintStart_toEndOf="@id/keeper_icon"
+        app:layout_constraintTop_toBottomOf="@id/cageowner" />
+
+    <TextView
+        android:id="@+id/weapon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Weapon"
+        android:textSize="@dimen/txt_small_size"
+        app:layout_constraintStart_toEndOf="@id/weaponowner"
+        app:layout_constraintTop_toBottomOf="@id/cageowner" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

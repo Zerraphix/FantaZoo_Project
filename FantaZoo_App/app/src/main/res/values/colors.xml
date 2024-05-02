@@ -16,5 +16,6 @@
     <color name="green_700">#234326</color>
     <color name="green_900">#152817</color>
     <color name="golden_brown">#99621E</color>
+    <color name="golden_brown_trans">#6699621E</color>
     <color name="dark_brown">#4E3C24</color>
 </resources>
