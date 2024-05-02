@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.AdminFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_adminTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="32dp"
+            android:text="Admin"
+            android:textSize="@dimen/txt_title_size"
+            android:fontFamily="serif"
+            />
+
+        <LinearLayout
+            android:id="@+id/buttons_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_adminTitle">
+
+            <Button
+                android:id="@+id/btn_admin_animal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Animal"
+                android:textSize="@dimen/txt_small_button_size"
+                android:backgroundTint="@color/green_100"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_series"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btn_admin_cage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cage"
+                android:textSize="@dimen/txt_small_button_size"
+                android:backgroundTint="@color/green_100"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_admin_animal" />
+
+            <Button
+            android:id="@+id/btn_admin_zookeeper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Keeper"
+            android:textSize="@dimen/txt_small_button_size"
+            android:backgroundTint="@color/green_100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_admin_cage" />
+
+            <Button
+                android:id="@+id/btn_admin_weapon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weapon"
+                android:textSize="@dimen/txt_small_button_size"
+                android:backgroundTint="@color/green_100"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_admin_zookeeper"/>
+        </LinearLayout>
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/admin_fragment_container"
+            android:layout_width="0dp"
+            android:layout_height="600dp"
+            android:horizontalSpacing="6dp"
+            android:numColumns="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttons_layout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

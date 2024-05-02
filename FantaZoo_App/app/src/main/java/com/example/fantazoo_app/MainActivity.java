@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.fantazoo_app.Fragments.AdminFragment;
 import com.example.fantazoo_app.Fragments.AnimalsFragment;
 import com.example.fantazoo_app.Fragments.CagesFragment;
 import com.example.fantazoo_app.Fragments.ZooKeepersFragment;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_animals).setOnClickListener(v -> fragmentChanger(AnimalsFragment.class));
         findViewById(R.id.btn_cages).setOnClickListener(v -> fragmentChanger(CagesFragment.class));
         findViewById(R.id.btn_zookeepers).setOnClickListener(v -> fragmentChanger(ZooKeepersFragment.class));
+        findViewById(R.id.btn_adminview).setOnClickListener(v -> fragmentChanger(AdminFragment.class));
+
     }
 
     private void fragmentChanger(Class c) {
