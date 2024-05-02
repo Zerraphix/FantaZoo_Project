@@ -115,6 +115,13 @@
             app:layout_constraintTop_toBottomOf="@+id/editor_animal_cage"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <GridView
+            android:id="@+id/admin_animal_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/btn_admin_animal_save"
+            app:layout_constraintStart_toStartOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

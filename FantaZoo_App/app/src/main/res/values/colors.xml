@@ -20,4 +20,5 @@
     <color name="golden_brown">#99621E</color>
     <color name="golden_brown_trans">#6699621E</color>
     <color name="dark_brown">#4E3C24</color>
+    <color name="delete_red">#9E0000</color>
 </resources>

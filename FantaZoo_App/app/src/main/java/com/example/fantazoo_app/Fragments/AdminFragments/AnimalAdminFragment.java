@@ -2,14 +2,17 @@ package com.example.fantazoo_app.Fragments.AdminFragments;
 
 import static com.example.fantazoo_app.Secrets.Host;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.fantazoo_app.Adapters.AnimalAdapter;
+import com.example.fantazoo_app.Adapters.AdminAnimalListAdapter;
 import com.example.fantazoo_app.Adapters.CageSpinnerAdapter;
 import com.example.fantazoo_app.Extra.Gender;
 import com.example.fantazoo_app.Models.AnimalModel;
@@ -44,7 +47,7 @@ import java.util.Map;
  * Use the {@link AnimalAdminFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AnimalAdminFragment extends Fragment {
+public class AnimalAdminFragment extends Fragment implements AdminAnimalListAdapter.EditButtonClickListener , AdminAnimalListAdapter.DeleteButtonClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,8 +61,12 @@ public class AnimalAdminFragment extends Fragment {
     private Spinner spinner;
     private ArrayList<CageModel> cages;
     private CageSpinnerAdapter adapter;
+    private ArrayList<AnimalModel> animals;
+    private AdminAnimalListAdapter animlistadapter;
+    private int selectedAnimalId;
     public static RequestQueue rq;
 
+    private GridView gridView;
     private EditText animalNameEditText;
     private EditText animalAgeEditText;
     private Spinner animalGenderSpinner;
@@ -102,17 +109,31 @@ public class AnimalAdminFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_animal_admin, container, false);
 
+        // Initializers
         spinner = view.findViewById(R.id.editor_animal_cage);
         cages = new ArrayList<>();
         adapter = new CageSpinnerAdapter(getContext(), cages);
         spinner.setAdapter(adapter);
+        gridView = view.findViewById(R.id.admin_animal_list);
+        animals = new ArrayList<>();
+        animlistadapter = new AdminAnimalListAdapter(getContext(), animals);
+        gridView.setAdapter(animlistadapter);
 
+        // All our edit text initialized
         animalNameEditText = view.findViewById(R.id.editor_animal_name);
         animalAgeEditText = view.findViewById(R.id.editor_animal_age);
         animalGenderSpinner = view.findViewById(R.id.editor_animal_gender);
         animalCageSpinner = view.findViewById(R.id.editor_animal_cage);
 
+        // Gets
         getCages();
+        getAnimals();
+
+
+
+        // The admin buttons
+        animlistadapter.setEditButtonClickListener(this);
+        animlistadapter.setDeleteButtonClickListener(this);
 
         Button saveButton = view.findViewById(R.id.btn_admin_animal_save);
 
@@ -124,6 +145,7 @@ public class AnimalAdminFragment extends Fragment {
             }
         });
 
+        // Gender spinner array
         ArrayAdapter<Gender> genderAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, Gender.values());
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         animalGenderSpinner.setAdapter(genderAdapter);
@@ -132,6 +154,69 @@ public class AnimalAdminFragment extends Fragment {
         return view;
     }
 
+    // Edit button
+    @Override
+    public void onEditButtonClick(AnimalModel selectedItem) {
+        // Populate the edit views with data from selectedItem
+        populateEditViews(selectedItem);
+
+        // Set the selected animal ID
+        selectedAnimalId = selectedItem.getId();
+    }
+
+    // Delete Button
+    @Override
+    public void onDeleteButtonClick(AnimalModel selectedItem) {
+        // Set the selected animal ID
+        deleteAnimal(selectedItem.getId());
+    }
+
+    // Method for formatting existing data into our editor
+    private void populateEditViews(AnimalModel selectedItem) {
+
+        animalNameEditText.setText(selectedItem.getName());
+        animalAgeEditText.setText(String.valueOf(selectedItem.getAge()));
+
+        // Find the position of the gender in the Gender enum
+        Gender gender = Gender.valueOf(selectedItem.getGender().toString());
+        int genderPosition = getGenderPosition(gender);
+
+        // Set the spinner to the position of the gender
+        animalGenderSpinner.setSelection(genderPosition);
+
+        // Find the position of the cage in the list of cages
+        CageModel selectedCage = selectedItem.getCage();
+        int cagePosition = getCagePosition(selectedCage);
+
+        // Set the cage spinner to the position of the selected cage
+        animalCageSpinner.setSelection(cagePosition);
+    }
+
+    // Method to get the cage position
+    private int getCagePosition(CageModel selectedCage) {
+        if (selectedCage != null) {
+            for (int i = 0; i < cages.size(); i++) {
+                CageModel cage = cages.get(i);
+                if (cage != null && cage.getId() == selectedCage.getId()) {
+                    return i;
+                }
+            }
+        }
+        return 0; // Default to the first position if not found
+    }
+
+    // Method to get the gender position
+    private int getGenderPosition(Gender gender) {
+        Gender[] genders = Gender.values();
+        for (int i = 0; i < genders.length; i++) {
+            if (genders[i] == gender) {
+                return i;
+            }
+        }
+        return 0; // Default to the first position if not found
+    }
+
+    // Method to get all the cages from the server
     public void getCages() {
         String url = Host + "/api/cc";
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
@@ -158,6 +243,34 @@ public class AnimalAdminFragment extends Fragment {
         rq.add(request);
     }
 
+    // Method to get all the animals from the server
+    public void getAnimals() {
+        String url = Host + "/api/ac";
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+            String json = response;
+            Gson gson = new Gson();
+
+            // Specify the type of the list elements
+            Type listType = new TypeToken<ArrayList<AnimalModel>>(){}.getType();
+            ArrayList<AnimalModel> animalModel = gson.fromJson(json, listType);
+
+            if (animalModel != null) {
+                // Add new data to the existing list
+                animals.addAll(animalModel);
+                animlistadapter.notifyDataSetChanged(); // Notify adapter of data change
+            }
+        }, error -> Log.e("Volley", error.toString()))
+        {
+            @Override
+            public Map<String, String> getHeaders(){
+                Map<String, String>  params = new HashMap<>();
+                return params;
+            }
+        };
+        rq.add(request);
+    }
+
+    // Method to save/edit an animal from the server
     private void saveAnimal() {
         // Retrieve values from views
         String name = animalNameEditText.getText().toString();
@@ -165,8 +278,12 @@ public class AnimalAdminFragment extends Fragment {
         Gender gender = (Gender) animalGenderSpinner.getSelectedItem();
         CageModel selectedCage = (CageModel) animalCageSpinner.getSelectedItem();
 
-
         int cageId = selectedCage.getId();
+
+        // Hide keyboard
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(animalNameEditText.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(animalAgeEditText.getWindowToken(), 0);
 
         // Create JSON object with the animal data
         JSONObject requestBody = new JSONObject();
@@ -181,8 +298,22 @@ public class AnimalAdminFragment extends Fragment {
             e.printStackTrace();
         }
 
+        // Determine the URL and request method based on whether the user is editing an existing animal or creating a new one
+        String url;
+        int method;
+
+        if (selectedAnimalId != 0) {
+            // Editing existing animal: use PUT request
+            url = Host + "/api/ac/id/" + selectedAnimalId;
+            method = Request.Method.PUT;
+        } else {
+            // Creating new animal: use POST request
+            url = Host + "/api/ac";
+            method = Request.Method.POST;
+        }
+
         // Create a request
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Host + "/api/ac", requestBody,
+        JsonObjectRequest request = new JsonObjectRequest(method, url, requestBody,
                 response -> {
                     // Handle response
                     Log.d("SaveAnimal", "Response: " + response.toString());
@@ -194,7 +325,36 @@ public class AnimalAdminFragment extends Fragment {
                     // Handle error response from server
                 });
 
-        // Add the request to the RequestQueue
+        // Add the request to the Volley request queue
+        reloadFragment();
         rq.add(request);
+    }
+
+    // Method to delete an animal from the server
+    private void deleteAnimal(int animalId) {
+        // Construct the URL for deleting the animal
+        String url = Host + "/api/ac/id/" + animalId;
+
+        // Create a DELETE request using Volley
+        StringRequest request = new StringRequest(Request.Method.DELETE, url,
+                response -> {
+                    // Animal successfully deleted, handle response if needed
+                    // For example, you might want to refresh the animal list after deletion
+                },
+                error -> {
+                    // Handle error response, if any
+                    Log.e("Volley", "Error deleting animal: " + error.toString());
+                });
+
+        // Add the request to the Volley request queue
+        reloadFragment();
+        rq.add(request);
+    }
+
+    // Method to reload the fragment
+    private void reloadFragment() {
+        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.admin_fragment_container, new AnimalAdminFragment());
+        fragmentTransaction.commit();
     }
 }
