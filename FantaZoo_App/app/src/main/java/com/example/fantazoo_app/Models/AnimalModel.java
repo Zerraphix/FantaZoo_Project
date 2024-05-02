@@ -9,13 +9,6 @@ public class AnimalModel {
     Gender gender;
     CageModel cage;
 
-    public AnimalModel(String name, int age, String gender, int cageId) {
-        this.name = name;
-        this.age = age;
-        this.gender = Gender.valueOf(gender.toUpperCase());
-        this.cage.id = cageId;
-    }
-
     public int getId() {
         return id;
     }
