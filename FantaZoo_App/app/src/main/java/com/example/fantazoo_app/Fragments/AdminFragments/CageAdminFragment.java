@@ -105,7 +105,7 @@ public class CageAdminFragment extends Fragment  implements AdminCageAdapter.Edi
         View view = inflater.inflate(R.layout.fragment_cage_admin, container, false);
 
         // Initializers
-        gridView = view.findViewById(R.id.admin_animal_list);
+        gridView = view.findViewById(R.id.admin_cage_list);
         cages = new ArrayList<>();
         cageadapter = new AdminCageAdapter(getContext(), cages);
         gridView.setAdapter(cageadapter);
