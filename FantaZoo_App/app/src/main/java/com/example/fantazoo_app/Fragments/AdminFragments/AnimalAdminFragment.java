@@ -18,14 +18,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.fantazoo_app.Adapters.AdminAnimalListAdapter;
+import com.example.fantazoo_app.Adapters.AdminAdapter.AdminAnimalAdapter;
 import com.example.fantazoo_app.Adapters.CageSpinnerAdapter;
 import com.example.fantazoo_app.Extra.Gender;
 import com.example.fantazoo_app.Models.AnimalModel;
@@ -47,7 +46,7 @@ import java.util.Map;
  * Use the {@link AnimalAdminFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AnimalAdminFragment extends Fragment implements AdminAnimalListAdapter.EditButtonClickListener , AdminAnimalListAdapter.DeleteButtonClickListener {
+public class AnimalAdminFragment extends Fragment implements AdminAnimalAdapter.EditButtonClickListener , AdminAnimalAdapter.DeleteButtonClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,7 +61,7 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalListAdap
     private ArrayList<CageModel> cages;
     private CageSpinnerAdapter adapter;
     private ArrayList<AnimalModel> animals;
-    private AdminAnimalListAdapter animlistadapter;
+    private AdminAnimalAdapter animlistadapter;
     private int selectedAnimalId;
     public static RequestQueue rq;
 
@@ -116,7 +115,7 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalListAdap
         spinner.setAdapter(adapter);
         gridView = view.findViewById(R.id.admin_animal_list);
         animals = new ArrayList<>();
-        animlistadapter = new AdminAnimalListAdapter(getContext(), animals);
+        animlistadapter = new AdminAnimalAdapter(getContext(), animals);
         gridView.setAdapter(animlistadapter);
 
         // All our edit text initialized
@@ -278,7 +277,11 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalListAdap
         Gender gender = (Gender) animalGenderSpinner.getSelectedItem();
         CageModel selectedCage = (CageModel) animalCageSpinner.getSelectedItem();
 
-        int cageId = selectedCage.getId();
+        int cageId = 0;
+        if (selectedCage != null){
+            cageId = selectedCage.getId();
+        }
+
 
         // Hide keyboard
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -291,9 +294,12 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalListAdap
             requestBody.put("name", name);
             requestBody.put("age", age);
             requestBody.put("gender", gender.toString()); // Convert enum to string
-            JSONObject cageObject = new JSONObject();
-            cageObject.put("id", cageId);
-            requestBody.put("cage", cageObject);
+            if (cageId != 0) {
+                JSONObject cageObject = new JSONObject();
+                cageObject.put("id", cageId);
+                requestBody.put("cage", cageObject);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -353,6 +359,7 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalListAdap
 
     // Method to reload the fragment
     private void reloadFragment() {
+        getAnimals();
         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.admin_fragment_container, new AnimalAdminFragment());
         fragmentTransaction.commit();

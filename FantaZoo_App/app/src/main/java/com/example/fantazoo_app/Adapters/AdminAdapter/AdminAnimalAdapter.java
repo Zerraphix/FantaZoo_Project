@@ -1,4 +1,4 @@
-package com.example.fantazoo_app.Adapters;
+package com.example.fantazoo_app.Adapters.AdminAdapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,18 +9,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.fantazoo_app.Models.AnimalModel;
-import com.example.fantazoo_app.Models.CageModel;
 import com.example.fantazoo_app.R;
 
 import java.util.ArrayList;
 
-public class AdminAnimalListAdapter extends BaseAdapter {
+public class AdminAnimalAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<AnimalModel> mAnimals;
     private EditButtonClickListener editButtonClickListener;
     private DeleteButtonClickListener deleteButtonClickListener;
 
-    public AdminAnimalListAdapter(Context context, ArrayList<AnimalModel> animals) {
+    public AdminAnimalAdapter(Context context, ArrayList<AnimalModel> animals) {
         mContext = context;
         mAnimals = animals;
     }
@@ -95,10 +94,11 @@ public class AdminAnimalListAdapter extends BaseAdapter {
         holder.nameTextView.setText(animal.getName());
         holder.ageTextView.setText(String.valueOf(animal.getAge()));
         holder.genderTextView.setText(animal.getGender().toString());
-        CageModel cage = animal.getCage();
-        if (cage != null) {
-            holder.cageTextView.setText(cage.getName());
-        } else {
+
+        if (animal.getCage() != null && animal.getCage().getName() != null) {
+            holder.cageTextView.setText(animal.getCage().getName());
+        }
+        else {
             holder.cageTextView.setText("No Cage");
         }
 
