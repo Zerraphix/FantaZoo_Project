@@ -67,6 +67,7 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalAdapter.
 
     private GridView gridView;
     private EditText animalNameEditText;
+    private EditText animalImgsrcEditText;
     private EditText animalAgeEditText;
     private Spinner animalGenderSpinner;
     private Spinner animalCageSpinner;
@@ -120,6 +121,7 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalAdapter.
 
         // All our edit text initialized
         animalNameEditText = view.findViewById(R.id.editor_animal_name);
+        animalImgsrcEditText = view.findViewById(R.id.editor_animal_imgsrc);
         animalAgeEditText = view.findViewById(R.id.editor_animal_age);
         animalGenderSpinner = view.findViewById(R.id.editor_animal_gender);
         animalCageSpinner = view.findViewById(R.id.editor_animal_cage);
@@ -175,6 +177,7 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalAdapter.
 
         animalNameEditText.setText(selectedItem.getName());
         animalAgeEditText.setText(String.valueOf(selectedItem.getAge()));
+        animalImgsrcEditText.setText(selectedItem.getImgsrc());
 
         // Find the position of the gender in the Gender enum
         Gender gender = Gender.valueOf(selectedItem.getGender().toString());
@@ -273,6 +276,7 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalAdapter.
     private void saveAnimal() {
         // Retrieve values from views
         String name = animalNameEditText.getText().toString();
+        String imgsrc = animalImgsrcEditText.getText().toString();
         int age = Integer.parseInt(animalAgeEditText.getText().toString());
         Gender gender = (Gender) animalGenderSpinner.getSelectedItem();
         CageModel selectedCage = (CageModel) animalCageSpinner.getSelectedItem();
@@ -286,12 +290,14 @@ public class AnimalAdminFragment extends Fragment implements AdminAnimalAdapter.
         // Hide keyboard
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(animalNameEditText.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(animalImgsrcEditText.getWindowToken(), 0);
         imm.hideSoftInputFromWindow(animalAgeEditText.getWindowToken(), 0);
 
         // Create JSON object with the animal data
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.put("name", name);
+            requestBody.put("imgsrc", imgsrc);
             requestBody.put("age", age);
             requestBody.put("gender", gender.toString()); // Convert enum to string
             if (cageId != 0) {

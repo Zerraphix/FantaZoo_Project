@@ -18,6 +18,7 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String name;
+    String imgsrc;
     int age;
     Gender gender;
 

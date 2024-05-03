@@ -40,6 +40,7 @@ public class AnimController {
         return ar.findById(id)
                 .map(animal -> {
                     animal.setName(newAnimal.getName());
+                    animal.setImgsrc(newAnimal.getImgsrc());
                     animal.setAge(newAnimal.getAge());
                     animal.setGender(newAnimal.getGender());
                     animal.setCage(newAnimal.getCage());

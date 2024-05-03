@@ -5,6 +5,7 @@ import com.example.fantazoo_app.Extra.Gender;
 public class AnimalModel {
     int id;
     String name;
+    String imgsrc;
     int age;
     Gender gender;
     CageModel cage;
@@ -23,6 +24,14 @@ public class AnimalModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImgsrc() {
+        return imgsrc;
+    }
+
+    public void setImgsrc(String imgsrc) {
+        this.imgsrc = imgsrc;
     }
 
     public int getAge() {

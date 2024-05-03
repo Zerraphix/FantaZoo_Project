@@ -41,7 +41,7 @@ public class AnimalAdapter extends ArrayAdapter<AnimalModel> {
             listItemView = inflater.inflate(R.layout.animal_list_item, parent, false);
 
             viewHolder.textView = listItemView.findViewById(R.id.animalname);
-            // viewHolder.imageView = listItemView.findViewById(R.id.img_card);
+            viewHolder.imageView = listItemView.findViewById(R.id.img_card);
 
             listItemView.setTag(viewHolder);
         } else {
@@ -55,10 +55,13 @@ public class AnimalAdapter extends ArrayAdapter<AnimalModel> {
             viewHolder.textView.setText(animal.getName());
         }
         // Load backdrop image using Picasso
-//        if (animal.getBackdrop_path() != null) {
-//            String imageUrl = "https://image.tmdb.org/t/p/original/" + result.getPoster_path();
-//            Picasso.get().load(imageUrl).into(viewHolder.imageView);
-//        }
+        if (animal.getImgsrc() != null) {
+            String imageUrl = animal.getImgsrc();
+            Picasso.get().load(imageUrl).into(viewHolder.imageView);
+        }
+        else {
+            Picasso.get().load("https://i.imgur.com/c4VaYAT.jpeg").into(viewHolder.imageView);
+        }
 
 //        viewHolder.imageView.setOnClickListener(v -> {
 //            // Pass the selected movie directly to DetailedMovieFragment.newInstance()
