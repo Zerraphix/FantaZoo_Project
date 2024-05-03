@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.example.fantazoo_app.Fragments.AdminFragments.AnimalAdminFragment;
 import com.example.fantazoo_app.Fragments.AdminFragments.CageAdminFragment;
 import com.example.fantazoo_app.Fragments.AdminFragments.WeaponAdminFragment;
+import com.example.fantazoo_app.Fragments.AdminFragments.ZooKeeperAdminFragment;
 import com.example.fantazoo_app.R;
 
 /**
@@ -76,7 +77,7 @@ public class AdminFragment extends Fragment {
     void initGui(View view) {
         view.findViewById(R.id.btn_admin_animal).setOnClickListener(v -> fragmentChanger(AnimalAdminFragment.class));
         view.findViewById(R.id.btn_admin_cage).setOnClickListener(v -> fragmentChanger(CageAdminFragment.class));
-        view.findViewById(R.id.btn_admin_zookeeper).setOnClickListener(v -> fragmentChanger(ZooKeepersFragment.class));
+        view.findViewById(R.id.btn_admin_zookeeper).setOnClickListener(v -> fragmentChanger(ZooKeeperAdminFragment.class));
         view.findViewById(R.id.btn_admin_weapon).setOnClickListener(v -> fragmentChanger(WeaponAdminFragment.class));
     }
 
