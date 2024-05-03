@@ -192,7 +192,7 @@ public class CageAdminFragment extends Fragment  implements AdminCageAdapter.Edi
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(cageNameEditText.getWindowToken(), 0);
 
-        // Create JSON object with the animal data
+        // Create JSON object with the cage data
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.put("name", name);
@@ -206,11 +206,11 @@ public class CageAdminFragment extends Fragment  implements AdminCageAdapter.Edi
         int method;
 
         if (selectedCageId != 0) {
-            // Editing existing animal: use PUT request
+            // Editing existing cage: use PUT request
             url = Host + "/api/cc/id/" + selectedCageId;
             method = Request.Method.PUT;
         } else {
-            // Creating new animal: use POST request
+            // Creating new cage: use POST request
             url = Host + "/api/cc";
             method = Request.Method.POST;
         }
@@ -233,16 +233,15 @@ public class CageAdminFragment extends Fragment  implements AdminCageAdapter.Edi
         rq.add(request);
     }
 
-    // Method to delete an animal from the server
+    // Method to delete an cage from the server
     private void deleteCage(int cageId) {
-        // Construct the URL for deleting the animal
+        // Construct the URL for deleting the cage
         String url = Host + "/api/cc/id/" + cageId;
 
         // Create a DELETE request using Volley
         StringRequest request = new StringRequest(Request.Method.DELETE, url,
                 response -> {
-                    // Animal successfully deleted, handle response if needed
-                    // For example, you might want to refresh the animal list after deletion
+                    // Cage successfully deleted, handle response if needed
                 },
                 error -> {
                     // Handle error response, if any

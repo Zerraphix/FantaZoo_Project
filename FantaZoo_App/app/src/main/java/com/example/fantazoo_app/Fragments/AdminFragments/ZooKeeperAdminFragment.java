@@ -259,7 +259,7 @@ public class ZooKeeperAdminFragment extends Fragment implements AdminKeeperAdapt
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(keeperNameEditText.getWindowToken(), 0);
 
-        // Create JSON object with the animal data
+        // Create JSON object with the keeper data
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.put("name", name);
@@ -283,11 +283,11 @@ public class ZooKeeperAdminFragment extends Fragment implements AdminKeeperAdapt
         int method;
 
         if (selectedKeeperId != 0) {
-            // Editing existing animal: use PUT request
+            // Editing existing keeper: use PUT request
             url = Host + "/api/zkc/id/" + selectedKeeperId;
             method = Request.Method.PUT;
         } else {
-            // Creating new animal: use POST request
+            // Creating new keeper: use POST request
             url = Host + "/api/zkc";
             method = Request.Method.POST;
         }
@@ -310,7 +310,7 @@ public class ZooKeeperAdminFragment extends Fragment implements AdminKeeperAdapt
         rq.add(request);
     }
 
-    // Method to delete an animal from the server
+    // Method to delete an keeper from the server
     private void deleteKeeper(int cageId) {
         // Construct the URL for deleting the animal
         String url = Host + "/api/zkc/id/" + cageId;
@@ -318,8 +318,7 @@ public class ZooKeeperAdminFragment extends Fragment implements AdminKeeperAdapt
         // Create a DELETE request using Volley
         StringRequest request = new StringRequest(Request.Method.DELETE, url,
                 response -> {
-                    // Animal successfully deleted, handle response if needed
-                    // For example, you might want to refresh the animal list after deletion
+                    // Keeper successfully deleted, handle response if needed
                 },
                 error -> {
                     // Handle error response, if any
@@ -331,7 +330,7 @@ public class ZooKeeperAdminFragment extends Fragment implements AdminKeeperAdapt
         rq.add(request);
     }
 
-    // Method to get all the cages from the server
+    // Method to get all the keepers from the server
     public void getCages() {
         String url = Host + "/api/cc";
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
@@ -358,7 +357,7 @@ public class ZooKeeperAdminFragment extends Fragment implements AdminKeeperAdapt
         rq.add(request);
     }
 
-    // Method to get all the weapons from the server
+    // Method to get all the keeepers from the server
     public void getWeapons() {
         String url = Host + "/api/wpc";
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {

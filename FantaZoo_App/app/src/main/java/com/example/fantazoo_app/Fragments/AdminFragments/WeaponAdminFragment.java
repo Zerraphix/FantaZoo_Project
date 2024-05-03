@@ -191,7 +191,7 @@ public class WeaponAdminFragment extends Fragment implements AdminWeaponAdapter.
         imm.hideSoftInputFromWindow(weaponNameEditText.getWindowToken(), 0);
         imm.hideSoftInputFromWindow(weaponDmgEditText.getWindowToken(), 0);
 
-        // Create JSON object with the animal data
+        // Create JSON object with the cage data
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.put("name", name);
@@ -206,11 +206,11 @@ public class WeaponAdminFragment extends Fragment implements AdminWeaponAdapter.
         int method;
 
         if (selectedWeaponId != 0) {
-            // Editing existing animal: use PUT request
+            // Editing existing weapon: use PUT request
             url = Host + "/api/wpc/id/" + selectedWeaponId;
             method = Request.Method.PUT;
         } else {
-            // Creating new animal: use POST request
+            // Creating new weapon: use POST request
             url = Host + "/api/wpc";
             method = Request.Method.POST;
         }
@@ -235,7 +235,7 @@ public class WeaponAdminFragment extends Fragment implements AdminWeaponAdapter.
 
     // Method to delete an weapon from the server
     private void deleteWeapon(int cageId) {
-        // Construct the URL for deleting the animal
+        // Construct the URL for deleting the weapon
         String url = Host + "/api/wpc/id/" + cageId;
 
         // Create a DELETE request using Volley
